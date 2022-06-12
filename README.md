@@ -6,7 +6,7 @@ SC KRM 인스톨러 입니다
 
 ## 사용된 패키지와 DLL, 오픈 소스
 - [Json.NET](https://github.com/JamesNK/Newtonsoft.Json)
-- [Octokit](https://github.com/octokit/octokit.net))
+- [Octokit](https://github.com/octokit/octokit.net)
 - [SharpZipLib](https://github.com/icsharpcode/SharpZipLib)
 
 ## 미리보기
