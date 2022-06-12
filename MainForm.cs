@@ -383,12 +383,29 @@ namespace SCKRM.Installer
 
             Log("SC KRM Copy...");
             DirectoryTool.Copy(downloadedSCKRMPath, selectedSCKRMPath);
-            Log("StreamingAssets/icon Copy...");
+            Log("StreamingAssets/pack.* Copy...");
+
+            {
+                string[] paths = Directory.GetFiles(downloadedStreamingAssetsPath, "pack.*");
+                for (int i = 0; i < paths.Length; i++)
+                {
+                    string path = paths[i];
+                    string name = Path.GetFileName(path);
+                    string selectedPath = Path.Combine(selectedStreamingAssetsPath, name);
+                    
+                    if (!File.Exists(selectedPath))
+                        File.Copy(path, selectedPath);
+                }
+            }
+
             Log("StreamingAssets/assets Copy...");
             DirectoryTool.Copy(Path.Combine(downloadedStreamingAssetsPath, "assets"), Path.Combine(selectedStreamingAssetsPath, "assets"));
 
             File.Copy(downloadedSCKRMPath + ".meta", selectedSCKRMPath + ".meta", true);
             File.Copy(downloadedStreamingAssetsPath + ".meta", selectedStreamingAssetsPath + ".meta", true);
+
+            File.Copy(Path.Combine(downloadedStreamingAssetsPath, "assets") + ".meta", Path.Combine(selectedStreamingAssetsPath, "assets") + ".meta", true);
+            File.Copy(Path.Combine(downloadedStreamingAssetsPath, "projectSettings") + ".meta", Path.Combine(selectedStreamingAssetsPath, "projectSettings") + ".meta", true);
 
 
 
