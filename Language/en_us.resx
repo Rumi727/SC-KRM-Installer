@@ -153,6 +153,10 @@
   <data name="downloadedVersion" xml:space="preserve">
     <value>Downloaded version - </value>
   </data>
+  <data name="easterEgg" xml:space="preserve">
+    <value>Gakkou Gurashi
+anime is fun</value>
+  </data>
   <data name="install" xml:space="preserve">
     <value>Install</value>
   </data>

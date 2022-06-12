@@ -153,6 +153,10 @@
   <data name="downloadedVersion" xml:space="preserve">
     <value>다운로드한 버전 - </value>
   </data>
+  <data name="easterEgg" xml:space="preserve">
+    <value>학교생활!
+애니 재밌어요</value>
+  </data>
   <data name="install" xml:space="preserve">
     <value>설치</value>
   </data>

@@ -169,6 +169,16 @@ namespace SCKRM.Installer.Language {
         }
         
         /// <summary>
+        ///   학교생활!
+        ///애니 재밌어요과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string easterEgg {
+            get {
+                return ResourceManager.GetString("easterEgg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   설치과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string install {

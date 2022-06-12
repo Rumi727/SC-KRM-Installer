@@ -97,6 +97,8 @@ namespace SCKRM.Installer
             else
                 log.AppendText(value);
 
+            log.AppendText(Size.ToString());
+
             logLine = true;
         }
 
@@ -558,5 +560,10 @@ namespace SCKRM.Installer
         }
 
         void LanguageSelect(object sender, EventArgs e) => LanguageSelect();
+
+        private void log_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
