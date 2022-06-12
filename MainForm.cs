@@ -2,9 +2,11 @@
 using Newtonsoft.Json.Linq;
 using Octokit;
 using SCKRM.Compress;
+using SCKRM.Language;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Data;
 using System.Drawing;
 using System.IO;
@@ -25,8 +27,43 @@ namespace SCKRM.Installer
         public MainForm()
         {
             InitializeComponent();
+
             client = new GitHubClient(new ProductHeaderValue("SC-KRM-Installer-App"));
+
+            try
+            {
+                string languagePath = Path.Combine(System.Windows.Forms.Application.StartupPath, "language");
+                if (File.Exists(languagePath))
+                {
+                    byte[] languageByte = File.ReadAllBytes(languagePath);
+                    if (languageByte == null || languageByte.Length <= 0)
+                        language.SelectedIndex = 0;
+                    else
+                        language.SelectedIndex = languageByte[0];
+                }
+                else
+                    language.SelectedIndex = 0;
+            }
+            catch (Exception e)
+            {
+                Program.Exception(e);
+                language.SelectedIndex = 0;
+            }
+
+            System.Windows.Forms.Application.ApplicationExit += ApplicationExit;
             AllRefresh();
+        }
+
+        void ApplicationExit(object sender, EventArgs e)
+        {
+            try
+            {
+                File.WriteAllBytes(Path.Combine(System.Windows.Forms.Application.StartupPath, "language"), new byte[] { (byte)language.SelectedIndex });
+            }
+            catch (Exception ex)
+            {
+                Program.Exception(ex);
+            }
         }
 
         GitHubClient client;
@@ -41,7 +78,7 @@ namespace SCKRM.Installer
             set
             {
                 _selectProjectPath = value;
-                selectedProjectLabel.Text = "Selected project - " + value;
+                selectedProjectLabel.Text = LanguageManager.LanguageLoad("selectedProject") + value;
             }
         }
 
@@ -52,7 +89,7 @@ namespace SCKRM.Installer
             set
             {
                 _newestVersion = value;
-                newestVersionLabel.Text = "Newest version - " + value;
+                newestVersionLabel.Text = LanguageManager.LanguageLoad("newestVersion") + value;
             }
         }
 
@@ -76,14 +113,14 @@ namespace SCKRM.Installer
             string projectFolder = GetProjectFolderPath();
             if (!Directory.Exists(projectFolder))
             {
-                MessageBox.Show("There is no project downloaded", "No project", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(LanguageManager.LanguageLoad("downloadedNoProject"), LanguageManager.LanguageLoad("noProject"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return "";
             }
 
             string[] paths = Directory.GetDirectories(projectFolder);
             if (paths == null || paths.Length != 1)
             {
-                MessageBox.Show("The downloaded project is corrupted", "Damaged project", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(LanguageManager.LanguageLoad("downloadDamagedProject"), LanguageManager.LanguageLoad("damagedProject"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return "";
             }
 
@@ -118,14 +155,28 @@ namespace SCKRM.Installer
             else if (!install.Enabled)
                 return;
 
+            language.Enabled = false;
             refresh.Enabled = false;
             projectDownload.Enabled = false;
             install.Enabled = false;
             projectFolderSelect.Enabled = false;
 
+            projectDownload.Text = LanguageManager.LanguageLoad("download");
+            install.Text = LanguageManager.LanguageLoad("install");
+            refresh.Text = LanguageManager.LanguageLoad("refresh");
+            projectFolderSelect.Text = LanguageManager.LanguageLoad("chooseAProject");
+
+            selectProjectPath = selectProjectFolderDialog.SelectedPath;
+
+            string version = GetVersion(DownloadedProjectFolderPath());
+            downloadedVersion.Text = LanguageManager.LanguageLoad("downloadedVersion") + version;
+
+            version = GetVersion(selectProjectFolderDialog.SelectedPath);
+            detectedVersionLabel.Text = LanguageManager.LanguageLoad("detectedVersion") + version;
+
             try
             {
-                newestVersion = "none";
+                newestVersion = LanguageManager.LanguageLoad("none");
                 projectRelease = await client.Repository.Release.GetLatest(projectOwner, projectName);
                 newestVersion = projectRelease.TagName;
             }
@@ -138,12 +189,7 @@ namespace SCKRM.Installer
                 Program.Exception(e);
             }
 
-            string version = GetVersion(DownloadedProjectFolderPath());
-            downloadedVersion.Text = "Downloaded version - " + version;
-
-            version = GetVersion(selectProjectFolderDialog.SelectedPath);
-            detectedVersionLabel.Text = "Detected version - " + version;
-
+            language.Enabled = true;
             refresh.Enabled = true;
             projectDownload.Enabled = true;
             install.Enabled = true;
@@ -164,12 +210,13 @@ namespace SCKRM.Installer
             else if (!refresh.Enabled)
                 return;
 
+            language.Enabled = false;
             projectDownload.Enabled = false;
             install.Enabled = false;
             refresh.Enabled = false;
             projectFolderSelect.Enabled = false;
 
-            downloadedVersion.Text = "Downloaded version - none";
+            downloadedVersion.Text = LanguageManager.LanguageLoad("downloadedVersion") + LanguageManager.LanguageLoad("none");
 
             using (WebClient webClient = new WebClient())
             {
@@ -192,12 +239,12 @@ namespace SCKRM.Installer
                 {
 
                     if (textAni == 0)
-                        progress.Text = "Download.";
+                        progress.Text = LanguageManager.LanguageLoad("download") + ".";
                     else if (textAni == 1)
-                        progress.Text = "Download..";
+                        progress.Text = LanguageManager.LanguageLoad("download") + "..";
                     else if (textAni == 2)
                     {
-                        progress.Text = "Download...";
+                        progress.Text = LanguageManager.LanguageLoad("download") + "...";
                         textAni = -1;
                     }
                     
@@ -229,12 +276,12 @@ namespace SCKRM.Installer
                     while (!isDecompressEnd)
                     {
                         if (textAni == 0)
-                            progress.Text = "Decompressing.";
+                            progress.Text = LanguageManager.LanguageLoad("decompressing") + ".";
                         else if (textAni == 1)
-                            progress.Text = "Decompressing..";
+                            progress.Text = LanguageManager.LanguageLoad("decompressing") + "..";
                         else if (textAni == 2)
                         {
-                            progress.Text = "Decompressing...";
+                            progress.Text = LanguageManager.LanguageLoad("decompressing") + "...";
                             textAni = -1;
                         }
 
@@ -274,12 +321,13 @@ namespace SCKRM.Installer
                     Program.Exception(ex);
                 }
 
-                progress.Text = "Download Complete!";
+                progress.Text = LanguageManager.LanguageLoad("downloadComplete");
             }
 
             progressBar.Value = 0;
             progressPercentage.Text = "0%";
 
+            language.Enabled = true;
             refresh.Enabled = true;
             install.Enabled = true;
             projectDownload.Enabled = true;
@@ -313,14 +361,14 @@ namespace SCKRM.Installer
                 return;
             else if (!Directory.Exists(selectProjectPath))
             {
-                MessageBox.Show("No project selected", "No project", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(LanguageManager.LanguageLoad("noProjectSelected"), LanguageManager.LanguageLoad("noProject"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             string downloadedVersion = GetVersion(downloadedProjectFolderPath);
-            if (string.IsNullOrEmpty(downloadedVersion))
+            if (downloadedVersion == LanguageManager.LanguageLoad("none"))
             {
-                MessageBox.Show("There is no version file in the downloaded project", "No version file", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(LanguageManager.LanguageLoad("downloadedProjectNoVersionFile"), LanguageManager.LanguageLoad("noVersionFile"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -329,17 +377,18 @@ namespace SCKRM.Installer
 
             if (!Directory.Exists(downloadedSCKRMPath) || !Directory.Exists(downloadedStreamingAssetsPath) || !File.Exists(downloadedSCKRMPath + ".meta") || !File.Exists(downloadedStreamingAssetsPath + ".meta"))
             {
-                MessageBox.Show("The downloaded project is corrupted", "Damaged project", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(LanguageManager.LanguageLoad("downloadDamagedProject"), LanguageManager.LanguageLoad("damagedProject"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            if (MessageBox.Show("If you continue, everything in the SC KRM folder will be deleted!\nWould you like to continue?\n(The StreamingAssets folder overwrites only the files to be installed, not touching the existing files)", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
+            if (MessageBox.Show(LanguageManager.LanguageLoad("installWarning"), LanguageManager.LanguageLoad("warning"), MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
                 return;
 
-            bool projectSettingOverwirte = MessageBox.Show("Overwrite project settings with defaults?\n(Only default settings are affected, added settings are not)", "Overwrite", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes;
+            bool projectSettingOverwirte = MessageBox.Show(LanguageManager.LanguageLoad("overwriteProjectSettings"), LanguageManager.LanguageLoad("overwrite"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
 
 
 
+            language.Enabled = false;
             install.Enabled = false;
             refresh.Enabled = false;
             projectDownload.Enabled = false;
@@ -357,7 +406,7 @@ namespace SCKRM.Installer
                 Directory.CreateDirectory(selectedStreamingAssetsPath);
 
 
-            Log("Backup...");
+            Log(LanguageManager.LanguageLoad("backup"));
             string backupPath = Path.Combine(System.Windows.Forms.Application.StartupPath, "backup");
             if (Directory.Exists(backupPath))
                 Directory.Delete(backupPath, true);
@@ -367,17 +416,18 @@ namespace SCKRM.Installer
 
 
 
-            Log("SC-KRM-Version Copy...");
+            Log(LanguageManager.LanguageLoad("sckrmVersionCopy"));
             File.Copy(Path.Combine(downloadedProjectFolderPath, "SC-KRM-Version"), Path.Combine(selectProjectPath, "SC-KRM-Version"), true);
 
 
 
-            Log("SC KRM Delete...");
+            Log(LanguageManager.LanguageLoad("sckrmDelete"));
             Directory.Delete(selectedSCKRMPath, true);
 
-            Log("SC KRM Copy...");
+            Log(LanguageManager.LanguageLoad("sckrmCopy"));
             DirectoryTool.Copy(downloadedSCKRMPath, selectedSCKRMPath);
-            Log("StreamingAssets/pack.* Copy...");
+
+            Log(LanguageManager.LanguageLoad("packCopy"));
 
             {
                 string[] paths = Directory.GetFiles(downloadedStreamingAssetsPath, "pack.*");
@@ -392,8 +442,10 @@ namespace SCKRM.Installer
                 }
             }
 
-            Log("StreamingAssets/assets Copy...");
-            DirectoryTool.Copy(Path.Combine(downloadedStreamingAssetsPath, "assets"), Path.Combine(selectedStreamingAssetsPath, "assets"));
+            Log(LanguageManager.LanguageLoad("assetsCopy"));
+
+            if (Directory.Exists(Path.Combine(downloadedStreamingAssetsPath, "assets")))
+                DirectoryTool.Copy(Path.Combine(downloadedStreamingAssetsPath, "assets"), Path.Combine(selectedStreamingAssetsPath, "assets"));
 
             File.Copy(downloadedSCKRMPath + ".meta", selectedSCKRMPath + ".meta", true);
             File.Copy(downloadedStreamingAssetsPath + ".meta", selectedStreamingAssetsPath + ".meta", true);
@@ -408,7 +460,7 @@ namespace SCKRM.Installer
                 string projectSettingsPath = Path.Combine(selectedStreamingAssetsPath, "projectSettings");
                 if (Directory.Exists(projectSettingsPath))
                 {
-                    Log("Selected Project Setting Deserialize...");
+                    Log(LanguageManager.LanguageLoad("selectedProjectSettingDeserialize"));
 
                     string[] paths = Directory.GetFiles(projectSettingsPath, "*.json");
                     for (int i = 0; i < paths.Length; i++)
@@ -433,7 +485,7 @@ namespace SCKRM.Installer
 
             if (Directory.Exists(Path.Combine(downloadedStreamingAssetsPath, "projectSettings")))
             {
-                Log("Downloaded and Selected StreamingAssets/projectSettings JSON Merge...");
+                Log(LanguageManager.LanguageLoad("projectSettingsJsonMerge"));
 
                 string selectedProjectSettingsPath = Path.Combine(selectedStreamingAssetsPath, "projectSettings");
                 if (!Directory.Exists(selectedProjectSettingsPath))
@@ -472,14 +524,11 @@ namespace SCKRM.Installer
 
 
 
-            Log("Installation finished!");
-
-
-            string version = GetVersion(selectProjectFolderDialog.SelectedPath);
-            detectedVersionLabel.Text = "Detected version - " + version;
+            Log(LanguageManager.LanguageLoad("installationFinished"));
 
 
 
+            language.Enabled = true;
             install.Enabled = true;
             refresh.Enabled = true;
             projectDownload.Enabled = true;
@@ -492,9 +541,28 @@ namespace SCKRM.Installer
         {
             string versionFilePath = Path.Combine(path, "SC-KRM-Version");
             if (!File.Exists(versionFilePath))
-                return "none";
+                return LanguageManager.LanguageLoad("none");
 
             return File.ReadAllText(versionFilePath);
         }
+
+        void LanguageSelect()
+        {
+            if (!install.Enabled)
+                return;
+            else if (!refresh.Enabled)
+                return;
+            else if (!projectDownload.Enabled)
+                return;
+
+            if (language.SelectedIndex == 1)
+                LanguageManager.currentLanguage = LanguageManager.Language.ko_kr;
+            else
+                LanguageManager.currentLanguage = LanguageManager.Language.en_us;
+
+            AllRefresh();
+        }
+
+        void LanguageSelect(object sender, EventArgs e) => LanguageSelect();
     }
 }

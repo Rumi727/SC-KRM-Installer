@@ -43,12 +43,13 @@ namespace SCKRM.Installer
             this.selectProjectFolderDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.install = new System.Windows.Forms.Button();
             this.downloadedVersion = new System.Windows.Forms.Label();
+            this.language = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // projectFolderSelect
             // 
             this.projectFolderSelect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.projectFolderSelect.Location = new System.Drawing.Point(366, 186);
+            this.projectFolderSelect.Location = new System.Drawing.Point(438, 200);
             this.projectFolderSelect.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.projectFolderSelect.Name = "projectFolderSelect";
             this.projectFolderSelect.Size = new System.Drawing.Size(106, 22);
@@ -60,7 +61,7 @@ namespace SCKRM.Installer
             // projectDownload
             // 
             this.projectDownload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.projectDownload.Location = new System.Drawing.Point(366, 246);
+            this.projectDownload.Location = new System.Drawing.Point(438, 260);
             this.projectDownload.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.projectDownload.Name = "projectDownload";
             this.projectDownload.Size = new System.Drawing.Size(106, 22);
@@ -73,10 +74,10 @@ namespace SCKRM.Installer
             // 
             this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar.Location = new System.Drawing.Point(12, 276);
+            this.progressBar.Location = new System.Drawing.Point(12, 290);
             this.progressBar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(302, 22);
+            this.progressBar.Size = new System.Drawing.Size(374, 22);
             this.progressBar.TabIndex = 2;
             // 
             // progress
@@ -84,16 +85,16 @@ namespace SCKRM.Installer
             this.progress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.progress.AutoEllipsis = true;
-            this.progress.Location = new System.Drawing.Point(9, 246);
+            this.progress.Location = new System.Drawing.Point(9, 260);
             this.progress.Name = "progress";
-            this.progress.Size = new System.Drawing.Size(351, 22);
+            this.progress.Size = new System.Drawing.Size(423, 22);
             this.progress.TabIndex = 3;
             this.progress.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // progressPercentage
             // 
             this.progressPercentage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressPercentage.Location = new System.Drawing.Point(320, 276);
+            this.progressPercentage.Location = new System.Drawing.Point(392, 290);
             this.progressPercentage.Name = "progressPercentage";
             this.progressPercentage.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.progressPercentage.Size = new System.Drawing.Size(38, 22);
@@ -108,7 +109,7 @@ namespace SCKRM.Installer
             this.selectedProjectLabel.AutoEllipsis = true;
             this.selectedProjectLabel.Location = new System.Drawing.Point(9, 9);
             this.selectedProjectLabel.Name = "selectedProjectLabel";
-            this.selectedProjectLabel.Size = new System.Drawing.Size(349, 18);
+            this.selectedProjectLabel.Size = new System.Drawing.Size(421, 18);
             this.selectedProjectLabel.TabIndex = 5;
             this.selectedProjectLabel.Text = "Selected project - none";
             // 
@@ -119,14 +120,14 @@ namespace SCKRM.Installer
             this.detectedVersionLabel.AutoEllipsis = true;
             this.detectedVersionLabel.Location = new System.Drawing.Point(9, 27);
             this.detectedVersionLabel.Name = "detectedVersionLabel";
-            this.detectedVersionLabel.Size = new System.Drawing.Size(349, 18);
+            this.detectedVersionLabel.Size = new System.Drawing.Size(421, 18);
             this.detectedVersionLabel.TabIndex = 6;
             this.detectedVersionLabel.Text = "Detected version - none";
             // 
             // refresh
             // 
             this.refresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.refresh.Location = new System.Drawing.Point(366, 216);
+            this.refresh.Location = new System.Drawing.Point(438, 230);
             this.refresh.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.refresh.Name = "refresh";
             this.refresh.Size = new System.Drawing.Size(106, 22);
@@ -142,7 +143,7 @@ namespace SCKRM.Installer
             this.newestVersionLabel.AutoEllipsis = true;
             this.newestVersionLabel.Location = new System.Drawing.Point(9, 55);
             this.newestVersionLabel.Name = "newestVersionLabel";
-            this.newestVersionLabel.Size = new System.Drawing.Size(349, 18);
+            this.newestVersionLabel.Size = new System.Drawing.Size(421, 18);
             this.newestVersionLabel.TabIndex = 6;
             this.newestVersionLabel.Text = "Newest version - none";
             // 
@@ -156,13 +157,13 @@ namespace SCKRM.Installer
             this.log.Name = "log";
             this.log.ReadOnly = true;
             this.log.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.log.Size = new System.Drawing.Size(342, 130);
+            this.log.Size = new System.Drawing.Size(414, 144);
             this.log.TabIndex = 7;
             // 
             // install
             // 
             this.install.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.install.Location = new System.Drawing.Point(366, 276);
+            this.install.Location = new System.Drawing.Point(438, 290);
             this.install.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.install.Name = "install";
             this.install.Size = new System.Drawing.Size(106, 22);
@@ -178,15 +179,29 @@ namespace SCKRM.Installer
             this.downloadedVersion.AutoEllipsis = true;
             this.downloadedVersion.Location = new System.Drawing.Point(9, 73);
             this.downloadedVersion.Name = "downloadedVersion";
-            this.downloadedVersion.Size = new System.Drawing.Size(349, 18);
+            this.downloadedVersion.Size = new System.Drawing.Size(421, 18);
             this.downloadedVersion.TabIndex = 6;
             this.downloadedVersion.Text = "Downloaded version - none";
+            // 
+            // language
+            // 
+            this.language.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.language.FormattingEnabled = true;
+            this.language.Items.AddRange(new object[] {
+            "English (US)",
+            "한국어 (대한민국)"});
+            this.language.Location = new System.Drawing.Point(438, 12);
+            this.language.Name = "language";
+            this.language.Size = new System.Drawing.Size(106, 23);
+            this.language.TabIndex = 8;
+            this.language.SelectedIndexChanged += new System.EventHandler(this.LanguageSelect);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(484, 311);
+            this.ClientSize = new System.Drawing.Size(556, 325);
+            this.Controls.Add(this.language);
             this.Controls.Add(this.log);
             this.Controls.Add(this.progressPercentage);
             this.Controls.Add(this.progress);
@@ -202,7 +217,7 @@ namespace SCKRM.Installer
             this.Font = new System.Drawing.Font("맑은 고딕", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.MinimumSize = new System.Drawing.Size(350, 189);
+            this.MinimumSize = new System.Drawing.Size(350, 208);
             this.Name = "MainForm";
             this.Text = "SC KRM Installer";
             this.ResumeLayout(false);
@@ -225,6 +240,7 @@ namespace SCKRM.Installer
         private System.Windows.Forms.FolderBrowserDialog selectProjectFolderDialog;
         private System.Windows.Forms.Button install;
         private System.Windows.Forms.Label downloadedVersion;
+        private System.Windows.Forms.ComboBox language;
     }
 }
 

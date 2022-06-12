@@ -22,4 +22,28 @@
     <PackageReference Include="SharpZipLib" Version="1.3.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Language\en_us.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>en_us.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Language\ko_kr.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ko_kr.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Language\ko_kr.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ko_kr.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Language\en_us.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>en_us.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>
