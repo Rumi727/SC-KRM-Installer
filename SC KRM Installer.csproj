@@ -8,6 +8,8 @@
     <ApplicationIcon>SC KRM.ico</ApplicationIcon>
     <Nullable></Nullable>
     <Version>0.0.0</Version>
+    <Authors>Simsimhan Chobo</Authors>
+    <Company>TEAM Bucket</Company>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
