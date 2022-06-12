@@ -342,6 +342,8 @@ namespace SCKRM.Installer
             if (MessageBox.Show("If you continue, everything in the SC KRM folder will be deleted!\nWould you like to continue?\n(The StreamingAssets folder overwrites only the files to be installed, not touching the existing files)", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
                 return;
 
+            bool projectSettingOverwirte = MessageBox.Show("Overwrite project settings with defaults?\n(Only default settings are affected, added settings are not)", "Overwrite", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes;
+
 
 
             install.Enabled = false;
@@ -438,12 +440,14 @@ namespace SCKRM.Installer
                         JObject jObject = JsonConvert.DeserializeObject<JObject>(File.ReadAllText(path));
                         if (selectedProjectSetting.ContainsKey(name))
                         {
-                            JObject selected = selectedProjectSetting[name];
-                            if (selected != null)
+                            JObject selectedJObject = selectedProjectSetting[name];
+                            if (projectSettingOverwirte && selectedJObject != null)
                             {
-                                selected.Merge(jObject, new JsonMergeSettings() { MergeArrayHandling = MergeArrayHandling.Replace });
-                                jObject = selected;
+                                selectedJObject.Merge(jObject, new JsonMergeSettings() { MergeArrayHandling = MergeArrayHandling.Union });
+                                jObject = selectedJObject;
                             }
+                            else if (jObject != null)
+                                jObject.Merge(selectedJObject, new JsonMergeSettings() { MergeArrayHandling = MergeArrayHandling.Replace });
                         }
 
                         File.WriteAllText(Path.Combine(selectedStreamingAssetsPath, "projectSettings", name), jObject.ToString());
