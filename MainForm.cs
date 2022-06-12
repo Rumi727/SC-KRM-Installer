@@ -139,16 +139,10 @@ namespace SCKRM.Installer
             }
 
             string version = GetVersion(DownloadedProjectFolderPath());
-            if (string.IsNullOrEmpty(version))
-                downloadedVersion.Text = "Downloaded version - none";
-            else
-                downloadedVersion.Text = "Downloaded version - " + version;
+            downloadedVersion.Text = "Downloaded version - " + version;
 
             version = GetVersion(selectProjectFolderDialog.SelectedPath);
-            if (string.IsNullOrEmpty(version))
-                detectedVersionLabel.Text = "Detected version - none";
-            else
-                detectedVersionLabel.Text = "Detected version - " + version;
+            detectedVersionLabel.Text = "Detected version - " + version;
 
             refresh.Enabled = true;
             projectDownload.Enabled = true;
@@ -482,10 +476,7 @@ namespace SCKRM.Installer
 
 
             string version = GetVersion(selectProjectFolderDialog.SelectedPath);
-            if (string.IsNullOrEmpty(version))
-                detectedVersionLabel.Text = "Detected version - none";
-            else
-                detectedVersionLabel.Text = "Detected version - " + version;
+            detectedVersionLabel.Text = "Detected version - " + version;
 
 
 
@@ -501,7 +492,7 @@ namespace SCKRM.Installer
         {
             string versionFilePath = Path.Combine(path, "SC-KRM-Version");
             if (!File.Exists(versionFilePath))
-                return "";
+                return "none";
 
             return File.ReadAllText(versionFilePath);
         }
