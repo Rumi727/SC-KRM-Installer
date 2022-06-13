@@ -97,8 +97,6 @@ namespace SCKRM.Installer
             else
                 log.AppendText(value);
 
-            log.AppendText(Size.ToString());
-
             logLine = true;
         }
 
