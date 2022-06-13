@@ -378,7 +378,7 @@ namespace SCKRM.Installer
             if (MessageBox.Show(LanguageManager.LanguageLoad("installWarning"), LanguageManager.LanguageLoad("warning"), MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
                 return;
 
-            bool projectSettingOverwirte = MessageBox.Show(LanguageManager.LanguageLoad("overwriteProjectSettings"), LanguageManager.LanguageLoad("overwrite"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
+            bool projectSettingOverwirte = MessageBox.Show(LanguageManager.LanguageLoad("overwriteProjectSettings"), LanguageManager.LanguageLoad("overwrite"), MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes;
 
 
 
