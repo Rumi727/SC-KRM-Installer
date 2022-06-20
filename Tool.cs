@@ -1,3 +1,4 @@
+using SCKRM.Installer;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -20,18 +21,32 @@ namespace SCKRM
 
             for (int i = 0; i < files.Length; i++)
             {
-                string file = files[i];
-                string name = Path.GetFileName(file);
-                string dest = Path.Combine(destFolder, name);
-                File.Copy(file, dest, true);
+                try
+                {
+                    string file = files[i];
+                    string name = Path.GetFileName(file);
+                    string dest = Path.Combine(destFolder, name);
+                    File.Copy(file, dest, true);
+                }
+                catch (Exception e)
+                {
+                    Program.Exception(e);
+                }
             }
 
             for (int i = 0; i < folders.Length; i++)
             {
-                string folder = folders[i];
-                string name = Path.GetFileName(folder);
-                string dest = Path.Combine(destFolder, name);
-                Copy(folder, dest);
+                try
+                {
+                    string folder = folders[i];
+                    string name = Path.GetFileName(folder);
+                    string dest = Path.Combine(destFolder, name);
+                    Copy(folder, dest);
+                }
+                catch (Exception e)
+                {
+                    Program.Exception(e);
+                }
             }
         }
 
