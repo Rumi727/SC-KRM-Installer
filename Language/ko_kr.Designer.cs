@@ -19,7 +19,7 @@ namespace SCKRM.Installer.Language {
     // 클래스에서 자동으로 생성되었습니다.
     // 멤버를 추가하거나 제거하려면 .ResX 파일을 편집한 다음 /str 옵션을 사용하여 ResGen을
     // 다시 실행하거나 VS 프로젝트를 다시 빌드하십시오.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class ko_kr {
@@ -199,7 +199,7 @@ namespace SCKRM.Installer.Language {
         /// <summary>
         ///   계속하면 SC KRM 폴더의 모든 항목이 삭제됩니다!
         ///계속하시겠습니까?
-        ///(StreamingAssets 폴더는 기존 파일을 건드리지 않고 설치할 파일만 덮어씁니다.)과(와) 유사한 지역화된 문자열을 찾습니다.
+        ///(StreamingAssets 폴더는 sc-krm 네임스페이스 안에 있는 파일만 삭제하며, 나머지 파일은 설치할 파일만 덮어씁니다.)과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string installWarning {
             get {

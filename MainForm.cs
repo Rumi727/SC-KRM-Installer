@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Octokit;
 using SCKRM.Compress;
@@ -439,7 +439,10 @@ namespace SCKRM.Installer
             Log(LanguageManager.LanguageLoad("assetsCopy"));
 
             if (Directory.Exists(Path.Combine(downloadedStreamingAssetsPath, "assets")))
+            {
+                Directory.Delete(Path.Combine(selectedStreamingAssetsPath, "assets/sc-krm"), true);
                 DirectoryTool.Copy(Path.Combine(downloadedStreamingAssetsPath, "assets"), Path.Combine(selectedStreamingAssetsPath, "assets"));
+            }
 
             File.Copy(downloadedSCKRMPath + ".meta", selectedSCKRMPath + ".meta", true);
             File.Copy(downloadedStreamingAssetsPath + ".meta", selectedStreamingAssetsPath + ".meta", true);

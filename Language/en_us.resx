@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="assetsCopy" xml:space="preserve">
     <value>Copy StreamingAssets/assets...</value>
@@ -166,7 +166,7 @@ anime is fun</value>
   <data name="installWarning" xml:space="preserve">
     <value>If you continue, everything in the SC KRM folder will be deleted!
 Would you like to continue?
-(The StreamingAssets folder overwrites only the files to be installed, not touching the existing files)</value>
+(The StreamingAssets folder only deletes files within the sc-krm namespace, and the rest of the files are overwritten only by the files to be installed.)</value>
   </data>
   <data name="newestVersion" xml:space="preserve">
     <value>Newest version - </value>
