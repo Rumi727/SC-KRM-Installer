@@ -241,7 +241,7 @@ namespace SCKRM.Installer
                         progress.Text = LanguageManager.LanguageLoad("download") + "...";
                         textAni = -1;
                     }
-                    
+
                     textAni++;
                     await Task.Delay(500);
                 }
@@ -290,7 +290,7 @@ namespace SCKRM.Installer
                     progressBar.Maximum = (int)asyncTask.maxProgress;
 
                     progressPercentage.Text = (int)(asyncTask.progress / asyncTask.maxProgress * 100) + "%";
-                    
+
                     await Task.Delay(1);
                 }
 
@@ -430,7 +430,7 @@ namespace SCKRM.Installer
                     string path = paths[i];
                     string name = Path.GetFileName(path);
                     string selectedPath = Path.Combine(selectedStreamingAssetsPath, name);
-                    
+
                     if (!File.Exists(selectedPath))
                         File.Copy(path, selectedPath);
                 }
@@ -440,7 +440,9 @@ namespace SCKRM.Installer
 
             if (Directory.Exists(Path.Combine(downloadedStreamingAssetsPath, "assets")))
             {
-                Directory.Delete(Path.Combine(selectedStreamingAssetsPath, "assets/sc-krm"), true);
+                if (Directory.Exists(Path.Combine(downloadedStreamingAssetsPath, "assets")))
+                    Directory.Delete(Path.Combine(selectedStreamingAssetsPath, "assets/sc-krm"), true);
+
                 DirectoryTool.Copy(Path.Combine(downloadedStreamingAssetsPath, "assets"), Path.Combine(selectedStreamingAssetsPath, "assets"));
             }
 
