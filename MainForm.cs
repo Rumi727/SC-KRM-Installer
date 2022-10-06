@@ -440,7 +440,7 @@ namespace SCKRM.Installer
 
             if (Directory.Exists(Path.Combine(downloadedStreamingAssetsPath, "assets")))
             {
-                if (Directory.Exists(Path.Combine(downloadedStreamingAssetsPath, "assets")))
+                if (Directory.Exists(Path.Combine(selectedStreamingAssetsPath, "assets/sc-krm")))
                     Directory.Delete(Path.Combine(selectedStreamingAssetsPath, "assets/sc-krm"), true);
 
                 DirectoryTool.Copy(Path.Combine(downloadedStreamingAssetsPath, "assets"), Path.Combine(selectedStreamingAssetsPath, "assets"));
