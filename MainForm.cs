@@ -16,7 +16,7 @@ namespace SCKRM.Installer
     public partial class MainForm : Form
     {
         const string projectOwner = "SimsimhanChobo";
-        const string projectName = "SC-KRM";
+        const string projectName = "SC-KRM-1.0";
 
         public MainForm()
         {
