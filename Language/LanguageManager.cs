@@ -1,10 +1,4 @@
-using Newtonsoft.Json;
-using SCKRM.Installer.Language;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Resources;
-//using System.Resources;
 
 namespace SCKRM.Language
 {
