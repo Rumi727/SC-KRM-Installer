@@ -212,6 +212,7 @@ namespace SCKRM.Installer
 
             downloadedVersion.Text = LanguageManager.LanguageLoad("downloadedVersion") + LanguageManager.LanguageLoad("none");
 
+#pragma warning disable SYSLIB0014 // 형식 또는 멤버는 사용되지 않습니다.
             using (WebClient webClient = new WebClient())
             {
                 webClient.Headers.Add(HttpRequestHeader.UserAgent, projectName + "-Installer-App");
@@ -317,6 +318,7 @@ namespace SCKRM.Installer
 
                 progress.Text = LanguageManager.LanguageLoad("downloadComplete");
             }
+#pragma warning restore SYSLIB0014 // 형식 또는 멤버는 사용되지 않습니다.
 
             progressBar.Value = 0;
             progressPercentage.Text = "0%";
