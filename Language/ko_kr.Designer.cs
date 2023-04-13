@@ -188,6 +188,15 @@ namespace SCKRM.Installer.Language {
         }
         
         /// <summary>
+        ///   설치 실패!과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string installationFail {
+            get {
+                return ResourceManager.GetString("installationFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   설치 완료!과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string installationFinished {
@@ -272,6 +281,24 @@ namespace SCKRM.Installer.Language {
         }
         
         /// <summary>
+        ///   패키지 병합...과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string packagesMerge {
+            get {
+                return ResourceManager.GetString("packagesMerge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   패키지 병합 실패!과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string packagesMergeFail {
+            get {
+                return ResourceManager.GetString("packagesMergeFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   StreamingAssets/pack.* 복사...과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string packCopy {
@@ -295,6 +322,24 @@ namespace SCKRM.Installer.Language {
         public static string refresh {
             get {
                 return ResourceManager.GetString("refresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   복원...과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string restore {
+            get {
+                return ResourceManager.GetString("restore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   복원 실패!과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string restoreFail {
+            get {
+                return ResourceManager.GetString("restoreFail", resourceCulture);
             }
         }
         

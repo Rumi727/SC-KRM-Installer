@@ -160,6 +160,9 @@ anime is fun</value>
   <data name="install" xml:space="preserve">
     <value>Install</value>
   </data>
+  <data name="installationFail" xml:space="preserve">
+    <value>Installaition failed!</value>
+  </data>
   <data name="installationFinished" xml:space="preserve">
     <value>Installation finished!</value>
   </data>
@@ -190,6 +193,12 @@ Would you like to continue?
     <value>Overwrite project settings with defaults?
 (Only the settings you want to install are affected, not the settings you add)</value>
   </data>
+  <data name="packagesMerge" xml:space="preserve">
+    <value>Merge packages...</value>
+  </data>
+  <data name="packagesMergeFail" xml:space="preserve">
+    <value>Merge packages failed!</value>
+  </data>
   <data name="packCopy" xml:space="preserve">
     <value>Copy StreamingAssets/pack.*...</value>
   </data>
@@ -198,6 +207,12 @@ Would you like to continue?
   </data>
   <data name="refresh" xml:space="preserve">
     <value>Refresh</value>
+  </data>
+  <data name="restore" xml:space="preserve">
+    <value>Restore...</value>
+  </data>
+  <data name="restoreFail" xml:space="preserve">
+    <value>Restore failed!</value>
   </data>
   <data name="sckrmCopy" xml:space="preserve">
     <value>Copy SC KRM...</value>

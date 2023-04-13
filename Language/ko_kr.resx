@@ -160,6 +160,9 @@
   <data name="install" xml:space="preserve">
     <value>설치</value>
   </data>
+  <data name="installationFail" xml:space="preserve">
+    <value>설치 실패!</value>
+  </data>
   <data name="installationFinished" xml:space="preserve">
     <value>설치 완료!</value>
   </data>
@@ -190,6 +193,12 @@
     <value>프로젝트 설정을 기본값으로 덮어쓰시겠습니까?
 (설치할 설정만 영향을 받고 사용자가 추가한 설정은 영향을 받지 않습니다)</value>
   </data>
+  <data name="packagesMerge" xml:space="preserve">
+    <value>패키지 병합...</value>
+  </data>
+  <data name="packagesMergeFail" xml:space="preserve">
+    <value>패키지 병합 실패!</value>
+  </data>
   <data name="packCopy" xml:space="preserve">
     <value>StreamingAssets/pack.* 복사...</value>
   </data>
@@ -198,6 +207,12 @@
   </data>
   <data name="refresh" xml:space="preserve">
     <value>새로고침</value>
+  </data>
+  <data name="restore" xml:space="preserve">
+    <value>복원...</value>
+  </data>
+  <data name="restoreFail" xml:space="preserve">
+    <value>복원 실패!</value>
   </data>
   <data name="sckrmCopy" xml:space="preserve">
     <value>SC KRM 복사...</value>

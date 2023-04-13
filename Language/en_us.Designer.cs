@@ -188,6 +188,15 @@ namespace SCKRM.Installer.Language {
         }
         
         /// <summary>
+        ///   Installaition failed!과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string installationFail {
+            get {
+                return ResourceManager.GetString("installationFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Installation finished!과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string installationFinished {
@@ -272,6 +281,24 @@ namespace SCKRM.Installer.Language {
         }
         
         /// <summary>
+        ///   Merge packages...과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string packagesMerge {
+            get {
+                return ResourceManager.GetString("packagesMerge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Merge packages failed!과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string packagesMergeFail {
+            get {
+                return ResourceManager.GetString("packagesMergeFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Copy StreamingAssets/pack.*...과(와) 유사한 지역화된 문자열을 찾습니다.
         /// </summary>
         public static string packCopy {
@@ -295,6 +322,24 @@ namespace SCKRM.Installer.Language {
         public static string refresh {
             get {
                 return ResourceManager.GetString("refresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Restore...과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string restore {
+            get {
+                return ResourceManager.GetString("restore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Restore failed!과(와) 유사한 지역화된 문자열을 찾습니다.
+        /// </summary>
+        public static string restoreFail {
+            get {
+                return ResourceManager.GetString("restoreFail", resourceCulture);
             }
         }
         

@@ -7,9 +7,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace SCKRM.Installer
 {
@@ -370,8 +372,10 @@ namespace SCKRM.Installer
 
             string downloadedSCKRMPath = Path.Combine(downloadedProjectFolderPath, "Assets/SC KRM");
             string downloadedStreamingAssetsPath = Path.Combine(downloadedProjectFolderPath, "Assets/StreamingAssets");
+            string downloadedPackagesPath = Path.Combine(downloadedProjectFolderPath, "Packages");
+            string downloadedManifestFilePath = Path.Combine(downloadedPackagesPath, "manifest.json");
 
-            if (!Directory.Exists(downloadedSCKRMPath) || !Directory.Exists(downloadedStreamingAssetsPath) || !File.Exists(downloadedSCKRMPath + ".meta") || !File.Exists(downloadedStreamingAssetsPath + ".meta"))
+            if (!Directory.Exists(downloadedSCKRMPath) || !Directory.Exists(downloadedStreamingAssetsPath) || !File.Exists(downloadedSCKRMPath + ".meta") || !File.Exists(downloadedStreamingAssetsPath + ".meta") || !File.Exists(downloadedManifestFilePath))
             {
                 MessageBox.Show(LanguageManager.LanguageLoad("downloadDamagedProject"), LanguageManager.LanguageLoad("damagedProject"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -394,6 +398,8 @@ namespace SCKRM.Installer
 
             string selectedSCKRMPath = Path.Combine(selectProjectPath, "Assets/SC KRM");
             string selectedStreamingAssetsPath = Path.Combine(selectProjectPath, "Assets/StreamingAssets");
+            string selectedPackagesPath = Path.Combine(selectProjectPath, "Packages");
+            string selectedManifestFilePath = Path.Combine(selectedPackagesPath, "manifest.json");
 
 
             if (!Directory.Exists(selectedSCKRMPath))
@@ -409,63 +415,94 @@ namespace SCKRM.Installer
 
             DirectoryTool.Copy(selectedSCKRMPath, Path.Combine(backupPath, "SC KRM"));
             DirectoryTool.Copy(selectedStreamingAssetsPath, Path.Combine(backupPath, "StreamingAssets"));
+            DirectoryTool.Copy(selectedPackagesPath, Path.Combine(backupPath, "Packages"));
 
 
-
-            Log(LanguageManager.LanguageLoad("sckrmVersionCopy"));
-            File.Copy(Path.Combine(downloadedProjectFolderPath, "SC-KRM-Version"), Path.Combine(selectProjectPath, "SC-KRM-Version"), true);
-
-
-
-            Log(LanguageManager.LanguageLoad("sckrmDelete"));
-            Directory.Delete(selectedSCKRMPath, true);
-
-            Log(LanguageManager.LanguageLoad("sckrmCopy"));
-            DirectoryTool.Copy(downloadedSCKRMPath, selectedSCKRMPath);
-
-            Log(LanguageManager.LanguageLoad("packCopy"));
-
+            try
             {
-                string[] paths = Directory.GetFiles(downloadedStreamingAssetsPath, "pack.*");
-                for (int i = 0; i < paths.Length; i++)
-                {
-                    string path = paths[i];
-                    string name = Path.GetFileName(path);
-                    string selectedPath = Path.Combine(selectedStreamingAssetsPath, name);
+                Log(LanguageManager.LanguageLoad("sckrmVersionCopy"));
+                File.Copy(Path.Combine(downloadedProjectFolderPath, "SC-KRM-Version"), Path.Combine(selectProjectPath, "SC-KRM-Version"), true);
 
-                    if (!File.Exists(selectedPath))
-                        File.Copy(path, selectedPath);
+
+
+                Log(LanguageManager.LanguageLoad("sckrmDelete"));
+                Directory.Delete(selectedSCKRMPath, true);
+
+                Log(LanguageManager.LanguageLoad("sckrmCopy"));
+                DirectoryTool.Copy(downloadedSCKRMPath, selectedSCKRMPath);
+
+                Log(LanguageManager.LanguageLoad("packCopy"));
+
+                {
+                    string[] paths = Directory.GetFiles(downloadedStreamingAssetsPath, "pack.*");
+                    for (int i = 0; i < paths.Length; i++)
+                    {
+                        string path = paths[i];
+                        string name = Path.GetFileName(path);
+                        string selectedPath = Path.Combine(selectedStreamingAssetsPath, name);
+
+                        if (!File.Exists(selectedPath))
+                            File.Copy(path, selectedPath);
+                    }
                 }
-            }
 
-            Log(LanguageManager.LanguageLoad("assetsCopy"));
+                Log(LanguageManager.LanguageLoad("assetsCopy"));
 
-            if (Directory.Exists(Path.Combine(downloadedStreamingAssetsPath, "assets")))
-            {
-                if (Directory.Exists(Path.Combine(selectedStreamingAssetsPath, "assets/sc-krm")))
-                    Directory.Delete(Path.Combine(selectedStreamingAssetsPath, "assets/sc-krm"), true);
-                if (Directory.Exists(Path.Combine(selectedStreamingAssetsPath, "assets/sc-krm-debug")))
-                    Directory.Delete(Path.Combine(selectedStreamingAssetsPath, "assets/sc-krm-debug"), true);
-
-                DirectoryTool.Copy(Path.Combine(downloadedStreamingAssetsPath, "assets"), Path.Combine(selectedStreamingAssetsPath, "assets"));
-            }
-
-            File.Copy(downloadedSCKRMPath + ".meta", selectedSCKRMPath + ".meta", true);
-            File.Copy(downloadedStreamingAssetsPath + ".meta", selectedStreamingAssetsPath + ".meta", true);
-
-            File.Copy(Path.Combine(downloadedStreamingAssetsPath, "assets") + ".meta", Path.Combine(selectedStreamingAssetsPath, "assets") + ".meta", true);
-            File.Copy(Path.Combine(downloadedStreamingAssetsPath, "projectSettings") + ".meta", Path.Combine(selectedStreamingAssetsPath, "projectSettings") + ".meta", true);
-
-
-
-            Dictionary<string, JObject> selectedProjectSetting = new Dictionary<string, JObject>();
-            {
-                string projectSettingsPath = Path.Combine(selectedStreamingAssetsPath, "projectSettings");
-                if (Directory.Exists(projectSettingsPath))
+                if (Directory.Exists(Path.Combine(downloadedStreamingAssetsPath, "assets")))
                 {
-                    Log(LanguageManager.LanguageLoad("selectedProjectSettingDeserialize"));
+                    if (Directory.Exists(Path.Combine(selectedStreamingAssetsPath, "assets/sc-krm")))
+                        Directory.Delete(Path.Combine(selectedStreamingAssetsPath, "assets/sc-krm"), true);
+                    if (Directory.Exists(Path.Combine(selectedStreamingAssetsPath, "assets/sc-krm-debug")))
+                        Directory.Delete(Path.Combine(selectedStreamingAssetsPath, "assets/sc-krm-debug"), true);
 
-                    string[] paths = Directory.GetFiles(projectSettingsPath, "*.json");
+                    DirectoryTool.Copy(Path.Combine(downloadedStreamingAssetsPath, "assets"), Path.Combine(selectedStreamingAssetsPath, "assets"));
+                }
+
+                File.Copy(downloadedSCKRMPath + ".meta", selectedSCKRMPath + ".meta", true);
+                File.Copy(downloadedStreamingAssetsPath + ".meta", selectedStreamingAssetsPath + ".meta", true);
+
+                File.Copy(Path.Combine(downloadedStreamingAssetsPath, "assets") + ".meta", Path.Combine(selectedStreamingAssetsPath, "assets") + ".meta", true);
+                File.Copy(Path.Combine(downloadedStreamingAssetsPath, "projectSettings") + ".meta", Path.Combine(selectedStreamingAssetsPath, "projectSettings") + ".meta", true);
+
+
+
+                Dictionary<string, JObject> selectedProjectSetting = new Dictionary<string, JObject>();
+                {
+                    string projectSettingsPath = Path.Combine(selectedStreamingAssetsPath, "projectSettings");
+                    if (Directory.Exists(projectSettingsPath))
+                    {
+                        Log(LanguageManager.LanguageLoad("selectedProjectSettingDeserialize"));
+
+                        string[] paths = Directory.GetFiles(projectSettingsPath, "*.json");
+                        for (int i = 0; i < paths.Length; i++)
+                        {
+                            string path = paths[i];
+                            string name = Path.GetFileName(path);
+                            Log(name);
+
+                            try
+                            {
+                                selectedProjectSetting.Add(name, JsonConvert.DeserializeObject<JObject>(File.ReadAllText(path)));
+                            }
+                            catch (Exception ex)
+                            {
+                                Program.Exception(ex);
+                            }
+                        }
+                    }
+                }
+
+
+
+                if (Directory.Exists(Path.Combine(downloadedStreamingAssetsPath, "projectSettings")))
+                {
+                    Log(LanguageManager.LanguageLoad("projectSettingsJsonMerge"));
+
+                    string selectedProjectSettingsPath = Path.Combine(selectedStreamingAssetsPath, "projectSettings");
+                    if (!Directory.Exists(selectedProjectSettingsPath))
+                        Directory.CreateDirectory(selectedProjectSettingsPath);
+
+                    string[] paths = Directory.GetFiles(Path.Combine(downloadedStreamingAssetsPath, "projectSettings"), "*.json");
                     for (int i = 0; i < paths.Length; i++)
                     {
                         string path = paths[i];
@@ -474,7 +511,20 @@ namespace SCKRM.Installer
 
                         try
                         {
-                            selectedProjectSetting.Add(name, JsonConvert.DeserializeObject<JObject>(File.ReadAllText(path)));
+                            JObject jObject = JsonConvert.DeserializeObject<JObject>(File.ReadAllText(path));
+                            if (selectedProjectSetting.ContainsKey(name))
+                            {
+                                JObject selectedJObject = selectedProjectSetting[name];
+                                if (projectSettingOverwirte && selectedJObject != null)
+                                {
+                                    selectedJObject.Merge(jObject, new JsonMergeSettings() { MergeArrayHandling = MergeArrayHandling.Union });
+                                    jObject = selectedJObject;
+                                }
+                                else if (jObject != null)
+                                    jObject.Merge(selectedJObject, new JsonMergeSettings() { MergeArrayHandling = MergeArrayHandling.Replace });
+                            }
+
+                            File.WriteAllText(Path.Combine(selectedStreamingAssetsPath, "projectSettings", name), jObject.ToString());
                         }
                         catch (Exception ex)
                         {
@@ -482,62 +532,76 @@ namespace SCKRM.Installer
                         }
                     }
                 }
-            }
 
+                Log(LanguageManager.LanguageLoad("packagesMerge"));
 
-
-            if (Directory.Exists(Path.Combine(downloadedStreamingAssetsPath, "projectSettings")))
-            {
-                Log(LanguageManager.LanguageLoad("projectSettingsJsonMerge"));
-
-                string selectedProjectSettingsPath = Path.Combine(selectedStreamingAssetsPath, "projectSettings");
-                if (!Directory.Exists(selectedProjectSettingsPath))
-                    Directory.CreateDirectory(selectedProjectSettingsPath);
-
-                string[] paths = Directory.GetFiles(Path.Combine(downloadedStreamingAssetsPath, "projectSettings"), "*.json");
-                for (int i = 0; i < paths.Length; i++)
+                try
                 {
-                    string path = paths[i];
-                    string name = Path.GetFileName(path);
-                    Log(name);
-
-                    try
+                    if (File.Exists(selectedManifestFilePath))
                     {
-                        JObject jObject = JsonConvert.DeserializeObject<JObject>(File.ReadAllText(path));
-                        if (selectedProjectSetting.ContainsKey(name))
+                        JObject jObject = JsonConvert.DeserializeObject<JObject>(File.ReadAllText(downloadedManifestFilePath));
+                        JObject selectedJObject = JsonConvert.DeserializeObject<JObject>(File.ReadAllText(selectedManifestFilePath));
+                        if (selectedJObject != null)
                         {
-                            JObject selectedJObject = selectedProjectSetting[name];
-                            if (projectSettingOverwirte && selectedJObject != null)
-                            {
-                                selectedJObject.Merge(jObject, new JsonMergeSettings() { MergeArrayHandling = MergeArrayHandling.Union });
-                                jObject = selectedJObject;
-                            }
-                            else if (jObject != null)
-                                jObject.Merge(selectedJObject, new JsonMergeSettings() { MergeArrayHandling = MergeArrayHandling.Replace });
+                            selectedJObject.Merge(jObject, new JsonMergeSettings() { MergeArrayHandling = MergeArrayHandling.Union });
+                            jObject = selectedJObject;
                         }
+                        else if (jObject != null)
+                            jObject.Merge(selectedJObject, new JsonMergeSettings() { MergeArrayHandling = MergeArrayHandling.Replace });
 
-                        File.WriteAllText(Path.Combine(selectedStreamingAssetsPath, "projectSettings", name), jObject.ToString());
+                        File.WriteAllText(selectedManifestFilePath, jObject.ToString());
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        Program.Exception(ex);
+                        Directory.CreateDirectory(selectedPackagesPath);
+                        File.Copy(downloadedManifestFilePath, selectedManifestFilePath);
                     }
                 }
+                catch (Exception ex)
+                {
+                    Program.Exception(ex);
+                    Log(LanguageManager.LanguageLoad("packagesMergeFail"));
+                }
+
+                Log(LanguageManager.LanguageLoad("installationFinished"));
             }
+            catch (Exception ex)
+            {
+                Program.Exception(ex);
+                Log(LanguageManager.LanguageLoad("installationFail"));
 
+                //복원
+                Log(LanguageManager.LanguageLoad("restore"));
 
+                try
+                {
+                    if (Directory.Exists(selectedSCKRMPath))
+                        Directory.Delete(selectedSCKRMPath, true);
+                    if (Directory.Exists(selectedStreamingAssetsPath))
+                        Directory.Delete(selectedStreamingAssetsPath, true);
+                    if (Directory.Exists(selectedPackagesPath))
+                        Directory.Delete(selectedPackagesPath, true);
 
-            Log(LanguageManager.LanguageLoad("installationFinished"));
+                    DirectoryTool.Copy(Path.Combine(backupPath, "SC KRM"), selectedSCKRMPath);
+                    DirectoryTool.Copy(Path.Combine(backupPath, "StreamingAssets"), selectedStreamingAssetsPath);
+                    DirectoryTool.Copy(Path.Combine(backupPath, "Packages"), selectedPackagesPath);
+                }
+                catch (Exception ex2)
+                {
+                    Program.Exception(ex2);
+                    Log(LanguageManager.LanguageLoad("restoreFail"));
+                }
+            }
+            finally
+            {
+                language.Enabled = true;
+                install.Enabled = true;
+                refresh.Enabled = true;
+                projectDownload.Enabled = true;
+                projectFolderSelect.Enabled = true;
 
-
-
-            language.Enabled = true;
-            install.Enabled = true;
-            refresh.Enabled = true;
-            projectDownload.Enabled = true;
-            projectFolderSelect.Enabled = true;
-
-            AllRefresh();
+                AllRefresh();
+            }
         }
 
         string GetVersion(string path)
